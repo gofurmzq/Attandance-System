@@ -3,8 +3,6 @@ from ..controller import *
 
 from flask_restx import Resource
 
-
-
 class Alive(Resource):
     @cache.cached(timeout=5)
     def get(self):

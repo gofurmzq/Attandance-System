@@ -18,7 +18,7 @@ authorizations = {
 }
 
 Compress(app)
-api = Api(app, authorizations=authorizations, title='Hospital Documentation API',
+api = Api(app, authorizations=authorizations, title='Attandance Documentation API',
     description='swagger always awesome')
 ns1 = Namespace('API', description='all of endpoint with prefix /user')
 api.add_namespace(ns1, path='/user')
