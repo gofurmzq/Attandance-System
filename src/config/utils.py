@@ -53,8 +53,8 @@ def create_auth_successful_response(token, status_code, message):
 def _get_token_expire_time(token):
     decoded = jwt.decode(token, Config.JWT_SECRET_KEY, algorithms=["HS256"])
     epochtime =decoded["exp"]
-    return dt.fromtimestamp(epochtime, tz=pytz.timezone('Asia/Jakarta'))
-     
+    # return dt.fromtimestamp(epochtime,dt.fromtimestamp(epochtime tz=pytz.timezone('Asia/Jakarta'))
+    return dt.fromtimestamp(epochtime).astimezone(pytz.timezone('Asia/Jakarta'))
 
 def required_body(valid):
     def decorator(func):

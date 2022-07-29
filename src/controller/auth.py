@@ -28,7 +28,7 @@ class UserLogin(Resource):
     @api.doc(body=login_fields,responses={
         200: 'OK',
         401: 'Unauthorized',
-        404: 'user account is not exist'
+        403: 'Forbidden'
     })
     @required_body([
         'email',

@@ -7,7 +7,7 @@ by Muhamad Gofur Muzaqi
 3. SQLAlchemy : Object Relational Mapper
 4. Marshmallow : Serializer and Validator
 5. Postgresql : Persistance database
-6. Redis : Flask Caching['SimpleCache']
+6. Redis : Flask Caching<SimpleCache>
 7. Flask JWT Exended : Authentication/Authorization
 8. Docker Compose : Container
 9. Swagger : Documentation
@@ -30,10 +30,36 @@ No need to explain the project structure, I think everything served is clear eno
 
 ## :clipboard: How To Check Documentation(Function and Guideline)
 1. Run in browser "http://0.0.0.0:8001/"
+
 2. Click default namespace and you can see all endpoint
+
 3. For the first you can check the endpoint can be access, check alive endpoint => try it out => response == alive <success>
-4. Get your access token from /login with id&password = 'superadmin' and /doctor/login with id&password = 'admin' 
-5. When response appear get access token in response
-6. Place your acces token with example <Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9....> in authorization with the symbol padlock after than insert and the padlock will be closed
-7. You can try access all endpoint
-8. Finish
+
+4. Register User/Employee with endpoint /user/registration and execute with example body json:
+
+{
+  "name": "Muhamad Gofur Muzaqi",
+  "email": "muhamadgofurmuzaqi@gmail.com",
+  "password": "password",
+  "gender": "Pria",  
+  "birthdate": "2022-07-29"
+}
+Noted: 
+a. Gender is type enumerate from the 2 option 'Pria' or 'Perempuan'
+b. Get your access token and skip step 5 or you want get access token from endpoint /user/login just continue the step
+
+5. Get your access token from /user/login with example body json
+{
+  "email": "muhamadgofurmuzaqi@gmail.com",
+  "password": "password"
+}
+
+6. When response appear get access token in response
+
+7. Place your acces token with example <Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9....> in authorization with the symbol padlock after than insert and the padlock will be closed
+
+8. You can try access all endpoint with fields served, for field's activity if there is more one activity i think better using String List with example => {"activity" : "['create documantation', 'Bug Fix']"} and for Column Status there is some choice like Gender ['DONE', 'IN_QUEUE', 'CANCELLED ] and for example => {"status" : "DONE"} or other.
+
+9. if you want log out just click padlock again and execute botton logout.
+
+10. Finish

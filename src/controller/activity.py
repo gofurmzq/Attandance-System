@@ -1,4 +1,3 @@
-from email.quoprimime import body_check
 from flask_jwt_extended import get_jwt
 from flask_restx import Resource, fields
 from flask import request
@@ -40,7 +39,6 @@ class Activity(Resource):
     def post(self):
         """Insert User's activity"""
         body = request.get_json()
-        print(get_jwt()['sub'])
         userID = get_jwt()['sub']
         body['user_id'] = userID 
         
