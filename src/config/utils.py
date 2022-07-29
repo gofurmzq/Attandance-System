@@ -1,10 +1,13 @@
 import bcrypt as bc
+from datetime import datetime as dt
+import pytz    
 from functools import wraps
 from flask import request, make_response, jsonify as flask_jsonify, make_response, current_app
 from flask_babel import lazy_gettext as _
-from flask_jwt_extended import get_jwt
+import jwt
 from werkzeug.exceptions import HTTPException as WerkzeugHttpException
 from .core import *
+from .init import Config
 
 def encryptBC(key):
     if isinstance(key, str):
@@ -35,20 +38,23 @@ def jsonify(data=None, meta=None, success=False, message=None, code=200):
 
 
 def create_auth_successful_response(token, status_code, message):
-    response = jsonify(
+    response = flask_jsonify(
         status="success",
         message=message,
         access_token=token,
         token_type="bearer",
-        expires_in=_get_token_expire_time(),
+        expires_in=_get_token_expire_time(token),
     )
     response.status_code = status_code
     response.headers["Cache-Control"] = "no-store"
     response.headers["Pragma"] = "no-cache"
     return response
 
-def _get_token_expire_time():
-    return get_jwt()["exp"]
+def _get_token_expire_time(token):
+    decoded = jwt.decode(token, Config.JWT_SECRET_KEY, algorithms=["HS256"])
+    epochtime =decoded["exp"]
+    return dt.fromtimestamp(epochtime, tz=pytz.timezone('Asia/Jakarta'))
+     
 
 def required_body(valid):
     def decorator(func):

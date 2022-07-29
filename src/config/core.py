@@ -20,7 +20,9 @@ authorizations = {
 Compress(app)
 api = Api(app, authorizations=authorizations, title='Hospital Documentation API',
     description='swagger always awesome')
-api.add_namespace(Namespace('API', description='swagger always awesome', ordered=True))
+ns1 = Namespace('API', description='all of endpoint with prefix /user')
+api.add_namespace(ns1, path='/user')
+
 cors   = CORS(app,
               origins=['http://localhost:5000','http://localhost:5001'],
               methods=['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
@@ -31,6 +33,6 @@ ma     = Marshmallow(app)
 bcrypt = Bcrypt(app)
 jwt    = JWTManager(app)
 
+app.app_context().push()
 db.init_app(app)
-with app.app_context():
-    db.create_all()
+db.create_all()

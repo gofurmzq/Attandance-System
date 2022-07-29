@@ -6,23 +6,23 @@ from flask_restx import Resource
 
 
 class Alive(Resource):
-    @cache.cached(timeout=50)
+    @cache.cached(timeout=5)
     def get(self):
-        alive = ['hello world' for _ in range(1000)]
-        return alive, 200
+        """Check if app is running"""
+        return 'alive', 200
 
 # TODO: Check APP alive
-api.add_resource(Alive, '/alive')
+ns1.add_resource(Alive, '/alive')
 
 # TODO: Employee Login
-api.add_resource(UserLogin,'/login')
+ns1.add_resource(UserLogin,'/login')
 
 # TODO: Employee Registration
-api.add_resource(UserRegistration,'/registration')
+ns1.add_resource(UserRegistration,'/registration')
 
-# TODO: Employees Logout
-api.add_resource(UserLogout,'/logout')
 
 # TODO: Employee Activity and Attandance
-api.add_resource(Activity,'/activity')
-api.add_resource(AttandanceHistory,'/attandance')
+ns1.add_resource(Activity,'/activity')
+ns1.add_resource(Get_Activity,'/activity/date')
+ns1.add_resource(AttandanceHistory,'/attandance')
+

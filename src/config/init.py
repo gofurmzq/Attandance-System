@@ -1,11 +1,12 @@
 """Flask configuration."""
+from datetime import timedelta
 from os import environ, path
 from dotenv import load_dotenv
 
 basedir = path.abspath(path.dirname(__file__))
-load_dotenv(path.join(basedir, '.env'))
+load_dotenv(path.join(path.dirname(path.dirname(basedir)), '.env'))
 
-class Config:
+class Config(object):
     """Set Flask config variables."""
     TEMPLATE_FOLDER 		        = '../Templates'
     STATIC_URL 				        = '/static'
@@ -19,9 +20,9 @@ class Config:
     CACHE_TYPE 				        = environ.get('CACHE_TYPE')
     
     JWT_COOKIE_SECURE               = environ.get('JWT_COOKIE_SECURE')
-    JWT_ACCESS_TOKEN_EXPIRES        = environ.get('JWT_ACCESS_TOKEN_EXPIRES')
+    JWT_ACCESS_TOKEN_EXPIRES        = timedelta(hours=1)
     JWT_SECRET_KEY			        = environ.get('JWT_SECRET_KEY')
-    JWT_TOKEN_LOCATION		        = environ.get('JWT_TOKEN_LOCATION')
+    JWT_TOKEN_LOCATION		        = ["headers", "cookies", "json", "query_string"]
 
     SQLALCHEMY_TRACK_MODIFICATIONS  = False
     

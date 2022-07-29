@@ -1,2 +1,2 @@
-from src.schema.activitySchema import *
-from src.schema.authSchema import *
+from .activitySchema import *
+from .authSchema import *

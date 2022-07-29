@@ -1,53 +1,29 @@
+from email.quoprimime import body_check
 from flask_jwt_extended import get_jwt
-from flask_restx import Resource
+from flask_restx import Resource, fields
 from flask import request
 from marshmallow import ValidationError
 from sqlalchemy.exc import SQLAlchemyError
 from ..models.activityDB import ActivityDB
 from ..schema.activitySchema import ActivitySchema
 from ..config.auth import auth_required
-from ..config.core import cache, db, api, patient_model_body
+from ..config.core import cache, db, api, ns1
 from ..config.utils import required_body, jsonify 
 
+insert_fields = ns1.model('insert', {
+    'date'      : fields.Date,
+    'check_in'  : fields.String,
+    'activity'  : fields.String,
+    'status'    : fields.String,
+    'check_out' : fields.String
+})
+
+delete_fields = ns1.model('delete', {
+    'date': fields.Date
+})
+
 class Activity(Resource):
-    @api.doc(security='apikey', responses={
-        200: 'OK',
-        502: 'Bad Gateway'
-    }) 
-    @cache.cached(timeout=50)
-    @auth_required(['user'])
-    @required_body([
-        'date'
-    ])
-    def get(self):
-        body = request.get_json()
-        date = body['date']
-        # TODO : Get Activity based on date
-        userID = get_jwt()['sub']        
-        try:
-            activityDetail = ActivityDB.query.filter(ActivityDB.date == date, ActivityDB.user_id == userID) \
-                .first()
-        except SQLAlchemyError as e:
-            return jsonify(
-                success = False,
-                message = str(e),
-                code    = 502 
-            )
-
-        # TODO : Dump query from DB
-        schema = ActivitySchema() 
-        
-        data = schema.dump(activityDetail)
-        activity = data['activity']
-        
-        return jsonify(
-            data    = activity,
-            success = True,
-            message = 'success',
-            code    = 200
-        )
-
-    @api.doc(security='apikey', responses={
+    @api.doc(body=insert_fields, security='apikey', responses={
         200: 'OK',
         403: 'Forbidden',
         412: 'Precondition Failed',
@@ -62,7 +38,9 @@ class Activity(Resource):
         'check_out'
     ])
     def post(self):
+        """Insert User's activity"""
         body = request.get_json()
+        print(get_jwt()['sub'])
         userID = get_jwt()['sub']
         body['user_id'] = userID 
         
@@ -106,7 +84,7 @@ class Activity(Resource):
             code    = 200
         )
 
-    @api.doc(security='apikey', responses={
+    @api.doc(body=insert_fields, security='apikey', responses={
         200: 'OK',
         403: 'Forbidden',
         412: 'Precondition Failed',
@@ -121,6 +99,7 @@ class Activity(Resource):
         'check_out'
     ])
     def put(self):
+        """Update User's activity"""
         body = request.get_json()
         userID = get_jwt()['sub']
         body['user_id'] = userID 
@@ -145,7 +124,7 @@ class Activity(Resource):
                 code    = 412
                 
             )
-        
+
         activityData = date.first()
         if not body['check_in']:
             body['check_in'] = activityData.check_in
@@ -172,7 +151,7 @@ class Activity(Resource):
         
         # TODO : Update activity
         try:
-            activityData.update(activityRow)
+            date.update(activityRow)
             db.session.commit()
         except SQLAlchemyError as e:
             return jsonify(
@@ -188,7 +167,7 @@ class Activity(Resource):
             code    = 200
         )
 
-    api.doc(security='apikey', responses={
+    @api.doc(body=delete_fields, security='apikey', responses={
         200: 'OK',
         502: 'Bad Gateway'
     })
@@ -197,6 +176,7 @@ class Activity(Resource):
         'date'
     ])
     def delete(self):
+        """Remove User's activity"""
         body = request.get_json()
         date = body['date']            
         # TODO : Remove detail doctor
@@ -215,5 +195,44 @@ class Activity(Resource):
         return jsonify(
             success = True,
             message = 'Remove activity success',
+            code    = 200
+        )
+
+class Get_Activity(Resource):
+    @api.doc(body=delete_fields, security='apikey', responses={
+        200: 'OK',
+        502: 'Bad Gateway'
+    }) 
+    @cache.cached(timeout=5)
+    @auth_required(['user'])
+    @required_body([
+        'date'
+    ])
+    def post(self):
+        """Get User's activity based on date"""
+        body = request.get_json()
+        date = body['date']
+        # TODO : Get Activity based on date
+        userID = get_jwt()['sub']        
+        try:
+            activityDetail = ActivityDB.query.filter(ActivityDB.date == date, ActivityDB.user_id == userID) \
+                .first()
+        except SQLAlchemyError as e:
+            return jsonify(
+                success = False,
+                message = str(e),
+                code    = 502 
+            )
+
+        # TODO : Dump query from DB
+        schema = ActivitySchema() 
+        
+        data = schema.dump(activityDetail)
+        activity = data['activity']
+        
+        return jsonify(
+            data    = {"activity-detail": activity},
+            success = True,
+            message = 'success',
             code    = 200
         )

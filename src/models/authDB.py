@@ -16,7 +16,7 @@ class UserDB(db.Model):
     email               = db.Column(db.Text(), nullable=False, unique=True)
     password            = db.Column(db.Text(), nullable=False)
     gender              = db.Column(Enum(Gender))
-    birthdate           = db.Column(db.Date(timezone=False), nullable=False)
+    birthdate           = db.Column(db.Date(), nullable=False)
     
     created_datetime    = db.Column(db.DateTime(timezone=True), default=datetime.now(pytz.timezone('Asia/Jakarta')))
     updated_datetime    = db.Column(db.DateTime(timezone=True), default=datetime.now(pytz.timezone('Asia/Jakarta')), onupdate=datetime.now(pytz.timezone('Asia/Jakarta')))

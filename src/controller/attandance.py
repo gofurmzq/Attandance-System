@@ -7,7 +7,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from ..models.activityDB import ActivityDB
 from ..schema.activitySchema import ActivitySchema
 from ..config.auth import auth_required
-from ..config.core import cache, db, api, patient_model_body
+from ..config.core import cache, api, ns1
 from ..config.utils import jsonify 
 
 class AttandanceHistory(Resource):
@@ -15,13 +15,13 @@ class AttandanceHistory(Resource):
         200: 'OK',
         502: 'Bad Gateway'
     }) 
-    @cache.cached(timeout=50)
+    @cache.cached(timeout=5)
     @auth_required(['user'])
     def get(self):
-        # TODO : Get Attandance History of User
+        """Get Attandance History of User"""
         UserID = get_jwt()['sub']        
         try:
-            userDetail = ActivityDB.query.filter(ActivityDB.id == UserID ) \
+            userDetail = ActivityDB.query.filter(ActivityDB.user_id == UserID) \
                 .all()
         except SQLAlchemyError as e:
             return jsonify(
@@ -29,7 +29,7 @@ class AttandanceHistory(Resource):
                 message = str(e),
                 code    = 502 
             )
-
+        print(len(userDetail))
         # TODO : Dump query from DB
         schema = ActivitySchema()
         historyAttandance = []

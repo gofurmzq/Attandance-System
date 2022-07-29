@@ -1,3 +1,3 @@
-from activity import *
-from attandance import *
-from auth import *
+from .activity import *
+from .attandance import *
+from .auth import *

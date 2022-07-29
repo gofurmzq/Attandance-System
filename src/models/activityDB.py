@@ -14,7 +14,7 @@ class Status(enum.Enum):
 
 class ActivityDB(db.Model):
     id                  = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid1)
-    user_id         = db.Column(UUID(as_uuid=True), db.ForeignKey(UserDB.id), nullable=False)
+    user_id             = db.Column(UUID(as_uuid=True), db.ForeignKey(UserDB.id), nullable=False)
     date                = db.Column(db.Date())
     check_in            = db.Column(db.Time())
     activity            = db.Column(db.Text(), nullable=True)

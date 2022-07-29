@@ -1,7 +1,7 @@
-# Attandance-System
+# :octocat: Attandance-System
 by Muhamad Gofur Muzaqi
 
-## Requirements
+## :wrench: Requirements
 1. Python : Programming Language
 2. Flask : Web Framework
 3. SQLAlchemy : Object Relational Mapper
@@ -12,11 +12,11 @@ by Muhamad Gofur Muzaqi
 8. Docker Compose : Container
 9. Swagger : Documentation
 
-## How to Run
+## :traffic_light:  How to Run
 1. Build with 'docker-compose build'
 2. Run with 'docker-compose up -d' for detach mode or if there is bugs you can try <docker-compose up --remove-orphans --force-recreate> and close your console
 
-## How to Migrate DB Models 
+## :trolleybus: How to Migrate DB Models 
 If you changes the db models or schema, please migrate and upgrade DB via alembic with :
 1. Make sure services are all running
 2. Enter container app with 'docker exec -it hospital_service bash'
@@ -25,10 +25,10 @@ If you changes the db models or schema, please migrate and upgrade DB via alembi
 5. Run 'python manage.py db upgrade' for applying those migrations to the DB
 6. Exit
 
-## Project Structure
+## :bar_chart: Project Structure
 No need to explain the project structure, I think everything served is clear enough.
 
-## How To Check Documentation(Function and Guideline)
+## :clipboard: How To Check Documentation(Function and Guideline)
 1. Run in browser "http://0.0.0.0:8001/"
 2. Click default namespace and you can see all endpoint
 3. For the first you can check the endpoint can be access, check alive endpoint => try it out => response == alive <success>

@@ -35,7 +35,7 @@ services:
     networks:
       - attandance-net
     volumes:
-      - attandance-data:/var/lib/postgresql/data
+      - attandance-data:/var/lib/postgresql
 
 networks:
     attandance-net:

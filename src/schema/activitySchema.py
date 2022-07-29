@@ -10,7 +10,7 @@ class ActivitySchema(ma.SQLAlchemySchema):
         include_fk  = True
     
     id                  = fields.UUID()
-    employee_id         = fields.UUID()
+    user_id             = fields.UUID()
     date                = fields.DateTime(format=Config.DATEFORMAT, required=True)
     check_in            = fields.DateTime(format=Config.TIMEFORMAT)
     activity            = fields.String()
