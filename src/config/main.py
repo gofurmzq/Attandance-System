@@ -15,7 +15,7 @@ from .utils import ErrorMessage, HttpException, jsonify
 from datetime import timedelta
 
 app = Flask(__APP_NAME__, template_folder=Config.TEMPLATE_FOLDER, static_folder=Config.STATIC_ROOT, static_url_path=Config.STATIC_URL)
-app.config.from_object(DevConfig())
+app.config.from_object(ProdConfig())
 app.app_context().push()
 
 
