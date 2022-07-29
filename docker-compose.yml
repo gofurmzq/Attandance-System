@@ -1,0 +1,44 @@
+# Project Name  : Attandace System
+# Services Name : Attandance System Mitramas
+# Maintainer    : Muhamad Gofur Muzaqi
+
+version: '3'
+
+volumes:
+  attandance-data: {}
+
+services:
+  attandance_service:
+    container_name: attandance_service
+    image: attandance_service:v1
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    env_file: .env
+    restart: always
+    ports:
+      - '8001:5000'
+    networks:
+      - attandance-net
+    volumes:
+      - .:/project/
+    links:
+      - attandance_postgresql
+
+  attandance_postgresql:
+    container_name: attandance_postgresql
+    image: postgres:11-alpine
+    restart: on-failure
+    env_file: .env
+    ports:
+      - '7002:5432'
+    networks:
+      - attandance-net
+    volumes:
+      - attandance-data:/var/lib/postgresql/data
+
+networks:
+    attandance-net:
+      name: attandance-net
+      external: False   
+
